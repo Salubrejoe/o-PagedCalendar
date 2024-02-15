@@ -2,29 +2,19 @@
 import SwiftUI
 
 
-//protocol ViewBuildero {
-//  func buildDescription<T: CalendarModel>(_ period: T) -> AnyView
-//}
-
-
-
 public struct PagedCalendar<Content: View>: View {
   
   @State private var calendarPeriods = CalendarPeriods()
-  
   @State private var intervalSelection: IntervalSelection = .day
   @State private var positionId: Int?
   
+  let navTitle: String
+  
   let content: (any CalendarModel) -> Content
   
-//  public init(intervalSelection: Binding<IntervalSelection>, @ViewBuilder content: @escaping (any CalendarModel) -> Content) {
-//    
-//    self._intervalSelection = intervalSelection
-//    self.content = content
-//  }
-  
-  public init(@ViewBuilder content: @escaping (any CalendarModel) -> Content) {
+  public init(navigationTitle: String = "", @ViewBuilder content: @escaping (any CalendarModel) -> Content) {
     
+    self.navTitle = navigationTitle
     self.content = content
   }
 
@@ -39,6 +29,7 @@ public struct PagedCalendar<Content: View>: View {
         
         periodView
       }
+      .navigationTitle(navTitle)
       .padding()
       .animation(.easeInOut, value: intervalSelection)
       .onChange(of: positionId, loadMoreIfNeeded)
@@ -113,131 +104,4 @@ public struct PagedCalendar<Content: View>: View {
     }
   }
 }
-//
-//#Preview {
-//  CalendarView()
-//}
 
-
-//    switch calendarSelection {
-//    case .day:
-//      if let positionId, positionId == days..count - 1 {
-//
-//        let newDays = [
-//          DayModello(minus: positionId + 1),
-//          DayModello(minus: positionId + 2)
-//        ]
-//
-//        days.append(contentsOf: newDays)
-//      }
-//
-//    case .week:
-//      if let positionId, positionId == weeks.count - 1 {
-//
-//        let newWeeks = [
-//          WeekModello(minus: positionId + 1),
-//          WeekModello(minus: positionId + 2)
-//        ]
-//
-//        weeks.append(contentsOf: newWeeks)
-//      }
-//
-//    case .month:
-//      if let positionId, positionId == months.count - 1 {
-//
-//        let newMonths = [
-//          MonthModello(minus: positionId + 1),
-//          MonthModello(minus: positionId + 2)
-//        ]
-//
-//        months.append(contentsOf: newMonths)
-//      }
-//
-//    case .year:
-//      if let positionId, positionId == years.count - 1 {
-//
-//        let newYears = [
-//          YearModello(minus: positionId + 1),
-//          YearModello(minus: positionId + 2)
-//        ]
-//
-//        years.append(contentsOf: newYears)
-//
-//      }
-//    }
-
-
-//      let newItems = (positionId..<positionId + 2).map { T.init(minus: $0) }
-
-
-//
-//        Picker("Calendar Selection", selection: $selection) {
-//          Text("Day")
-//            .tag(CalendarSelection.day)
-//          Text("Week")
-//            .tag(CalendarSelection.week)
-//          Text("Month")
-//            .tag(CalendarSelection.month)
-//          Text("Year")
-//            .tag(CalendarSelection.year)
-//        }
-//        .pickerStyle(.segmented)
-//
-
-
-//          Group {
-//
-//            switch selection {
-//            case .day:
-//              dayView(with: geo)
-//            case .week:
-//              weekView(with: geo)
-//            case .month:
-//              monthView(with: geo)
-//            case .year:
-//              yearView(with: geo)
-//            }
-//          }
-
-
-
-//@ViewBuilder
-//  private func weekView(with geo: GeometryProxy) -> some View {
-//    LazyHStack(spacing: 0) {
-//
-//      ForEach(weeks) { week in
-//
-//        VStack(spacing: 20) {
-//
-//          let date = week.startDate
-//
-//          Text("Start Date: \(week.startDate.formatted(date: .numeric, time: .shortened))")
-//            .foregroundStyle(.secondary)
-//            .padding(.top)
-//          Text("End Date: \(week.endDate.formatted(date: .numeric, time: .shortened))")
-//            .foregroundStyle(.secondary)
-//
-//          Spacer()
-//
-//          Text("Week \(date.weekOfYear())")
-//            .font(.title)
-//
-//          Text(date.monthName())
-//            .font(.title2)
-//
-//          Spacer()
-//
-//          Text(positionId?.description ?? "-404")
-//            .font(.largeTitle)
-//            .foregroundStyle(.secondary)
-//            .padding(.bottom)
-//
-//        }
-//        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-//        .border(Color.white)
-//        .id(weeks.firstIndex(where: { $0.id == week.id }))
-//        .frame(width: geo.size.width)
-//
-//      }
-//    }
-//  }
