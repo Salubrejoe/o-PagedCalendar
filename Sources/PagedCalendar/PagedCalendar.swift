@@ -12,7 +12,7 @@ public struct PagedCalendar<Content: View>: View {
   
   @State private var calendarPeriods = CalendarPeriods()
   
-  @Binding var intervalSelection: IntervalSelection
+  @State private var intervalSelection: IntervalSelection = .day
   @State private var positionId: Int?
   
   let content: (any CalendarModel) -> Content
@@ -23,13 +23,8 @@ public struct PagedCalendar<Content: View>: View {
 //    self.content = content
 //  }
   
-  public init(
-    intervalSelection: Binding<IntervalSelection>,
-    @ViewBuilder content: @escaping (any CalendarModel) -> Content
+  public init(@ViewBuilder content: @escaping (any CalendarModel) -> Content) {
     
-  ) {
-    
-    self._intervalSelection = intervalSelection
     self.content = content
   }
 
